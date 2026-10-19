@@ -7,6 +7,15 @@ class SlotMachine extends StatefulWidget {
   State<SlotMachine> createState() => _SlotMachineState();
 }
 class _SlotMachineState extends State<SlotMachine> {
+void _reset() {
+  setState((){
+    _coins = 10;
+    _slot1 = 'assets/images/cherry.png';
+    _slot2 = 'assets/images/lemon.png';
+    _slot3 = 'assets/images/seven.png';
+    _message = '';  
+  });
+}
   final _random = Random();
   final _symbols = [
     'assets/images/cherry.png',
@@ -20,6 +29,12 @@ class _SlotMachineState extends State<SlotMachine> {
   var _message = '';
   @override
 void _spin(){
+  if (_coins <= 0){
+    setState((){
+      _message = 'Монеты закончились 😢';
+    });
+    return;
+  }
   setState((){
     _slot1 = _symbols[_random.nextInt(_symbols.length)];
     _slot2 = _symbols[_random.nextInt(_symbols.length)];
@@ -67,7 +82,7 @@ void _spin(){
         ),
         SizedBox(height: 40),
         ElevatedButton(
-          onPressed: _spin,
+          onPressed: _coins > 0 ? _spin : null,
           style: ElevatedButton.styleFrom(
             backgroundColor: Colors.amber,
             padding: EdgeInsets.symmetric(
@@ -81,6 +96,17 @@ void _spin(){
               fontSize: 20,
               fontWeight: FontWeight.bold,
               color: Colors.black,
+            ),
+          ),
+        ),
+        SizedBox(height: 12),
+        TextButton(
+          onPressed: _reset,
+          child: Text(
+            'Начать заново',
+            style: TextStyle(
+              color: Colors.white70,
+              fontSize: 16,
             ),
           ),
         ),
