@@ -1,6 +1,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <application
+<<<<<<< HEAD
         android:label="Слот-машина"
+=======
+        android:label="slot_machine_kornachev"
+>>>>>>> aa9449a4cce9b80991dc28e352d5e7e075f56285
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

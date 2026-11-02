@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:slot_machine_kornachev/slot_row.dart';
 import 'package:slot_machine_kornachev/sound_service.dart';
-
 import 'dart:math';
 
 class SlotMachine extends StatefulWidget {
@@ -14,6 +13,11 @@ class SlotMachine extends StatefulWidget {
 
 class _SlotMachineState
     extends State<SlotMachine> {
+
+  State<SlotMachine> createState() => _SlotMachineState();
+}
+
+class _SlotMachineState extends State<SlotMachine> {
   final _random = Random();
   final _symbols = [
     'assets/images/cherry.png',
@@ -30,10 +34,15 @@ class _SlotMachineState
 
   var isMuted = false;
 
+  
+  var isMuted = false;
+  var _backgroundStarted = false;
+
   @override
   void initState() {
     super.initState();
     SoundService.playBackground();
+
   }
 
   void _reset() {
@@ -57,6 +66,7 @@ class _SlotMachineState
       final delay = progress < 0.5
           ? 40
           : progress < 0.8
+
           ? 100
           : 200;
 
@@ -67,6 +77,13 @@ class _SlotMachineState
           _symbols[_random.nextInt(
             _symbols.length,
           )];
+=======
+              ? 100
+              : 200;
+
+      await Future.delayed(Duration(milliseconds: delay));
+      result = _symbols[_random.nextInt(_symbols.length)];
+>>>>>>> aa9449a4cce9b80991dc28e352d5e7e075f56285
       onTick(result);
     }
     return result;
@@ -75,7 +92,16 @@ class _SlotMachineState
   Future<void> _spin() async {
     if (_coins <= 0 || _isSpinning) return;
 
+<<<<<<< HEAD
     await SoundService.playClick();
+=======
+    SoundService.playClick();
+
+    if (!_backgroundStarted) {
+      SoundService.playBackground();
+      _backgroundStarted = true;
+    }
+>>>>>>> aa9449a4cce9b80991dc28e352d5e7e075f56285
 
     setState(() {
       _isSpinning = true;
@@ -122,16 +148,49 @@ class _SlotMachineState
           'Попробуй ещё раз  😔 -1 монета';
       await SoundService.playLose();
     }
-
     setState(() {
       _isSpinning = false;
       _coins += coinsChange;
       _message = newMessage;
     });
   }
-
   Future<void> _toggleMute() async {
     await SoundService.toggleMute();
+
+      onTick: (val) => setState(() => _slot1 = val),
+    final result2 = await _spinReel(
+      totalTicks: 13,
+      onTick: (val) => setState(() => _slot2 = val),
+    );
+    final result3 = await _spinReel(
+      totalTicks: 16,
+      onTick: (val) => setState(() => _slot3 = val),
+    );
+
+    await Future.delayed(const Duration(milliseconds: 300));
+
+    setState(() {
+      _isSpinning = false;
+      if (result1 == result2 && result2 == result3) {
+        if (result1 == 'assets/images/seven.png') {
+          _coins += 10;
+          _message = 'ДЖЕКПОТ! 🎰🎰🎰 +10 монет';
+          SoundService.playJackpot();
+        } else {
+          _coins += 3;
+          _message = 'Победа! 🎉 +3 монеты';
+          SoundService.playWin();
+        }
+      } else {
+        _coins -= 1;
+        _message = 'Попробуй ещё раз  😔 -1 монета';
+        SoundService.playLose();
+      }
+    });
+  }
+
+  void _toggleMute() {
+    SoundService.toggleMute();
     setState(() {
       isMuted = SoundService.isMuted;
     });
@@ -145,6 +204,7 @@ class _SlotMachineState
         Align(
           alignment: Alignment.topRight,
           child: Padding(
+<<<<<<< HEAD
             padding: const EdgeInsets.only(
               right: 16,
               top: 8,
@@ -155,6 +215,13 @@ class _SlotMachineState
                 isMuted
                     ? Icons.volume_off
                     : Icons.volume_up,
+=======
+            padding: const EdgeInsets.only(right: 16, top: 8),
+            child: IconButton(
+              onPressed: _toggleMute,
+              icon: Icon(
+                isMuted ? Icons.volume_off : Icons.volume_up,
+>>>>>>> aa9449a4cce9b80991dc28e352d5e7e075f56285
                 color: Colors.white,
                 size: 28,
               ),
@@ -172,9 +239,13 @@ class _SlotMachineState
         const SizedBox(height: 40),
         AnimatedOpacity(
           opacity: _isSpinning ? 0.85 : 1.0,
+<<<<<<< HEAD
           duration: const Duration(
             milliseconds: 100,
           ),
+=======
+          duration: const Duration(milliseconds: 100),
+>>>>>>> aa9449a4cce9b80991dc28e352d5e7e075f56285
           child: SlotRow(
             slot1: _slot1,
             slot2: _slot2,
@@ -184,6 +255,7 @@ class _SlotMachineState
         SizedBox(
           height: 36,
           child: AnimatedSwitcher(
+<<<<<<< HEAD
             duration: const Duration(
               milliseconds: 400,
             ),
@@ -201,6 +273,16 @@ class _SlotMachineState
                 color: Colors.white,
                 fontWeight:
                     _message.contains('ДЖЕКПОТ')
+=======
+            duration: const Duration(milliseconds: 400),
+            child: Text(
+              _isSpinning ? '🎰 Крутим...' : _message,
+              key: ValueKey(_isSpinning ? 'spinning' : _message),
+              style: TextStyle(
+                fontSize: 20,
+                color: Colors.white,
+                fontWeight: _message.contains('ДЖЕКПОТ')
+>>>>>>> aa9449a4cce9b80991dc28e352d5e7e075f56285
                     ? FontWeight.bold
                     : FontWeight.normal,
               ),
@@ -209,9 +291,13 @@ class _SlotMachineState
         ),
         const SizedBox(height: 40),
         ElevatedButton(
+<<<<<<< HEAD
           onPressed: _coins > 0 && !_isSpinning
               ? _spin
               : null,
+=======
+          onPressed: _coins > 0 && !_isSpinning ? _spin : null,
+>>>>>>> aa9449a4cce9b80991dc28e352d5e7e075f56285
           style: ElevatedButton.styleFrom(
             backgroundColor: Colors.amber,
             padding: const EdgeInsets.symmetric(
@@ -220,9 +306,13 @@ class _SlotMachineState
             ),
           ),
           child: Text(
+<<<<<<< HEAD
             _isSpinning
                 ? '🎰 Крутим...'
                 : 'КРУТИТЬ 🎰',
+=======
+            _isSpinning ? '🎰 Крутим...' : 'КРУТИТЬ 🎰',
+>>>>>>> aa9449a4cce9b80991dc28e352d5e7e075f56285
             style: const TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
@@ -244,4 +334,8 @@ class _SlotMachineState
       ],
     );
   }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> aa9449a4cce9b80991dc28e352d5e7e075f56285
