@@ -12,3 +12,17 @@
 2) `cd <папка проекта>`
 3) `flutter pub get` *(скачать все необходимые в `pubspec.yaml`)*
 4) `flutter run -d chrome` *(ваш браузер)*
+# Лабораторная работа №10. Слот-машина
+Автор: Фамилия Имя. Группа: ваша группа. Дата: дата сдачи.
+| Главный экран | Результат | Монеты закончились |
+| --- | --- | --- |
+| ![Главный экран](steps/step3_kornachev.png) | ![Результат](steps/step4_kornachev.png) | 
+- Запуск: `flutter pub get`, затем `flutter run -d chrome` или `flutter run -d
+ID_устройства`.
+- Звук включается отдельной кнопкой; до её нажатия приложение молчит.
+- Сборка Android: `flutter build apk --release`.
+- Готовый файл: `build/app/outputs/flutter-apk/app-release.apk`.
+- APK: ссылка на файл собственного GitHub Release.
+- Проверенные Flutter/Dart: фактический вывод `flutter --version`.
+- Изучено: состояние и анимация; локальные ресурсы; аудиофокус; жизненный цикл и
+освобождение плееров; иконки; Web и Android release-сборки.
